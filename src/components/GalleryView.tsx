@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { MoreHorizontal, Move, Trash2, Star, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,9 +20,10 @@ interface GalleryViewProps {
   photos: Photo[];
   selectedCategory: string;
   searchQuery: string;
+  onPhotoClick?: (photo: Photo) => void;
 }
 
-export const GalleryView = ({ photos, selectedCategory, searchQuery }: GalleryViewProps) => {
+export const GalleryView = ({ photos, selectedCategory, searchQuery, onPhotoClick }: GalleryViewProps) => {
   const filteredPhotos = useMemo(() => {
     let filtered = photos;
     
@@ -70,7 +70,7 @@ export const GalleryView = ({ photos, selectedCategory, searchQuery }: GalleryVi
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Eye className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">Nenhuma foto encontrada</h3>
+            <h3 className="text-lg font-medium text-gray-300 mb-2">Nenhuma foto encontrada</h3>
             <p className="text-gray-500">
               {searchQuery 
                 ? `Não encontramos fotos para "${searchQuery}"`
@@ -84,7 +84,8 @@ export const GalleryView = ({ photos, selectedCategory, searchQuery }: GalleryVi
           {filteredPhotos.map((photo) => (
             <div
               key={photo.id}
-              className="group relative aspect-square bg-gray-100 rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200"
+              className="group relative aspect-square bg-gray-100 rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-200 cursor-pointer"
+              onClick={() => onPhotoClick?.(photo)}
             >
               <img
                 src={photo.url}

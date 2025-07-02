@@ -1,9 +1,15 @@
 
 import React from 'react';
-import { Settings, User, Zap } from 'lucide-react';
+import { Settings, User, Zap, Upload, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export const Header = () => {
+interface HeaderProps {
+  onLoginClick: () => void;
+  onUploadClick: () => void;
+  isLoggedIn: boolean;
+}
+
+export const Header = ({ onLoginClick, onUploadClick, isLoggedIn }: HeaderProps) => {
   return (
     <header className="h-20 bg-black/90 backdrop-blur-md border-b border-red-600/30 flex items-center justify-between px-6 shadow-2xl">
       <div className="flex items-center space-x-4">
@@ -22,14 +28,35 @@ export const Header = () => {
       </div>
       
       <div className="flex items-center space-x-3">
-        <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-red-600/20">
-          <Settings className="w-4 h-4 mr-2" />
-          Configurações
+        <Button 
+          onClick={onUploadClick}
+          className="bg-red-600 hover:bg-red-700 text-white"
+        >
+          <Upload className="w-4 h-4 mr-2" />
+          Adicionar Fotos
         </Button>
-        <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-red-600/20">
-          <User className="w-4 h-4 mr-2" />
-          Perfil
-        </Button>
+
+        {!isLoggedIn ? (
+          <Button 
+            onClick={onLoginClick}
+            variant="outline" 
+            className="border-red-600/30 text-red-400 hover:bg-red-600/20"
+          >
+            <LogIn className="w-4 h-4 mr-2" />
+            Conectar
+          </Button>
+        ) : (
+          <>
+            <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-red-600/20">
+              <Settings className="w-4 h-4 mr-2" />
+              Configurações
+            </Button>
+            <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-red-600/20">
+              <User className="w-4 h-4 mr-2" />
+              Perfil
+            </Button>
+          </>
+        )}
       </div>
     </header>
   );
