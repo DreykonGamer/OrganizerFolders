@@ -12,7 +12,7 @@ const Index = () => {
   const [photos, setPhotos] = useState([]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
       <Header />
       
       <div className="flex h-[calc(100vh-80px)]">
@@ -22,7 +22,7 @@ const Index = () => {
         />
         
         <div className="flex-1 flex flex-col">
-          <div className="p-6 border-b bg-white/80 backdrop-blur-sm">
+          <div className="p-6 border-b border-gray-700 bg-black/40 backdrop-blur-sm">
             <SearchBar 
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
