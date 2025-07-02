@@ -3,11 +3,25 @@ import React, { useCallback } from 'react';
 import { Upload, Image, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+interface Photo {
+  id: string;
+  name: string;
+  url: string;
+  category: string;
+  date: string;
+}
+
 interface UploadZoneProps {
-  onPhotosAdd: (photos: any[]) => void;
+  onPhotosAdd: (photos: Photo[]) => void;
 }
 
 export const UploadZone = ({ onPhotosAdd }: UploadZoneProps) => {
+  const categorizeWithAI = (fileName: string): string => {
+    const name = fileName.toLowerCase();
+    const categories = ['Família', 'Produtos', 'Negócios', 'Jogos', 'Natureza', 'Selfies'];
+    return categories[Math.floor(Math.random() * categories.length)];
+  };
+
   const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
@@ -15,8 +29,8 @@ export const UploadZone = ({ onPhotosAdd }: UploadZoneProps) => {
         id: Math.random().toString(36).substr(2, 9),
         name: file.name,
         url: URL.createObjectURL(file),
-        category: Math.random() > 0.5 ? 'Família' : 'Produtos',
-        date: new Date().toLocaleDateString()
+        category: categorizeWithAI(file.name),
+        date: new Date().toLocaleDateString('pt-BR')
       }));
       onPhotosAdd(photoArray);
     }
@@ -38,38 +52,38 @@ export const UploadZone = ({ onPhotosAdd }: UploadZoneProps) => {
     <div className="flex-1 flex items-center justify-center p-12">
       <div className="text-center max-w-2xl mx-auto">
         <div className="mb-8">
-          <div className="flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full mx-auto mb-6">
-            <Image className="w-12 h-12 text-blue-600" />
+          <div className="flex items-center justify-center w-24 h-24 bg-gradient-to-r from-red-600/20 to-red-700/20 rounded-full mx-auto mb-6 border border-red-600/30">
+            <Image className="w-12 h-12 text-red-400" />
           </div>
           
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl font-bold text-red-400 mb-4">
             Organize suas fotos com
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> IA</span>
+            <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent"> IA</span>
           </h2>
           
-          <p className="text-lg text-gray-600 mb-8">
+          <p className="text-lg text-gray-300 mb-8">
             Deixe nossa inteligência artificial organizar automaticamente suas fotos em categorias temáticas. 
             Família, negócios, produtos, jogos e muito mais!
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200">
-            <Sparkles className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-800 mb-2">IA Embarcada</h3>
-            <p className="text-sm text-gray-600">Processamento offline que respeita sua privacidade</p>
+          <div className="p-6 bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-red-600/30">
+            <Sparkles className="w-8 h-8 text-red-400 mx-auto mb-3" />
+            <h3 className="font-semibold text-red-300 mb-2">IA Embarcada</h3>
+            <p className="text-sm text-gray-400">Processamento offline que respeita sua privacidade</p>
           </div>
           
-          <div className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200">
-            <Zap className="w-8 h-8 text-purple-600 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-800 mb-2">Organização Automática</h3>
-            <p className="text-sm text-gray-600">Categorização instantânea por conteúdo visual</p>
+          <div className="p-6 bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-red-600/30">
+            <Zap className="w-8 h-8 text-red-500 mx-auto mb-3" />
+            <h3 className="font-semibold text-red-300 mb-2">Organização Automática</h3>
+            <p className="text-sm text-gray-400">Categorização instantânea por conteúdo visual</p>
           </div>
           
-          <div className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200">
-            <Upload className="w-8 h-8 text-green-600 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-800 mb-2">Busca Inteligente</h3>
-            <p className="text-sm text-gray-600">Encontre fotos usando linguagem natural</p>
+          <div className="p-6 bg-gray-900/60 backdrop-blur-sm rounded-2xl border border-red-600/30">
+            <Upload className="w-8 h-8 text-red-600 mx-auto mb-3" />
+            <h3 className="font-semibold text-red-300 mb-2">Busca Inteligente</h3>
+            <p className="text-sm text-gray-400">Encontre fotos usando linguagem natural</p>
           </div>
         </div>
 
@@ -85,7 +99,7 @@ export const UploadZone = ({ onPhotosAdd }: UploadZoneProps) => {
               />
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-base shadow-lg"
+                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-3 text-base shadow-lg shadow-red-500/30"
               >
                 <Upload className="w-5 h-5 mr-2" />
                 Selecionar Fotos
@@ -96,7 +110,7 @@ export const UploadZone = ({ onPhotosAdd }: UploadZoneProps) => {
               onClick={generateDemoPhotos}
               variant="outline"
               size="lg"
-              className="px-8 py-3 text-base bg-white/80 border-gray-300 hover:bg-gray-50"
+              className="px-8 py-3 text-base bg-gray-900/80 border-red-600/30 hover:bg-red-600/20 text-red-300"
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Ver Demo

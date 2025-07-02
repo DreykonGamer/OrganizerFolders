@@ -9,20 +9,57 @@ import { PhotoViewer } from '@/components/PhotoViewer';
 import { SocialLogin } from '@/components/SocialLogin';
 import { ImageUploader } from '@/components/ImageUploader';
 
+interface Photo {
+  id: string;
+  name: string;
+  url: string;
+  category: string;
+  date: string;
+}
+
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [searchQuery, setSearchQuery] = useState('');
-  const [photos, setPhotos] = useState([]);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handlePhotoClick = (photo) => {
+  // Função para categorizar automaticamente usando IA (simulada)
+  const categorizeWithAI = (fileName: string): string => {
+    const name = fileName.toLowerCase();
+    
+    // Palavras-chave para categorização automática
+    const categoryKeywords = {
+      'Família': ['família', 'family', 'parentes', 'pais', 'filhos', 'irmãos', 'casamento', 'aniversário'],
+      'Negócios': ['negócios', 'business', 'trabalho', 'escritório', 'reunião', 'apresentação', 'empresa'],
+      'Produtos': ['produto', 'item', 'loja', 'venda', 'compra', 'shopping'],
+      'Jogos': ['jogo', 'game', 'gaming', 'videogame', 'console', 'pc', 'gameplay'],
+      'Natureza': ['natureza', 'nature', 'planta', 'árvore', 'flor', 'paisagem', 'praia', 'montanha'],
+      'Comidas': ['comida', 'food', 'restaurante', 'pizza', 'hambúrguer', 'café', 'almoço', 'jantar'],
+      'Pets': ['pet', 'cachorro', 'gato', 'animal', 'dog', 'cat'],
+      'Selfies': ['selfie', 'autorretrato', 'eu', 'rosto'],
+      'Capturas de tela': ['screenshot', 'print', 'captura', 'tela'],
+      'Eventos': ['evento', 'festa', 'celebração', 'formatura', 'show'],
+      'Móveis': ['móvel', 'casa', 'decoração', 'sala', 'quarto', 'cozinha'],
+      'Documentos': ['documento', 'pdf', 'contrato', 'papel', 'receita']
+    };
+
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+      if (keywords.some(keyword => name.includes(keyword))) {
+        return category;
+      }
+    }
+
+    return 'Todas';
+  };
+
+  const handlePhotoClick = (photo: Photo) => {
     setSelectedPhoto(photo);
   };
 
-  const handlePhotoNavigation = (direction) => {
+  const handlePhotoNavigation = (direction: 'next' | 'prev') => {
     if (!selectedPhoto) return;
     
     const currentIndex = photos.findIndex(p => p.id === selectedPhoto.id);
@@ -33,26 +70,48 @@ const Index = () => {
     }
   };
 
-  const handlePhotoDelete = (photoId) => {
+  const handlePhotoDelete = (photoId: string) => {
     setPhotos(photos.filter(p => p.id !== photoId));
-    setSelectedPhoto(null);
+    if (selectedPhoto?.id === photoId) {
+      setSelectedPhoto(null);
+    }
   };
 
-  const handleLogin = (provider) => {
-    console.log(`Logging in with ${provider}`);
+  const handleMovePhoto = (photoId: string, newCategory: string) => {
+    setPhotos(photos.map(photo => 
+      photo.id === photoId 
+        ? { ...photo, category: newCategory }
+        : photo
+    ));
+  };
+
+  const handleFavoritePhoto = (photoId: string) => {
+    setPhotos(photos.map(photo => 
+      photo.id === photoId 
+        ? { ...photo, category: 'Favoritos' }
+        : photo
+    ));
+  };
+
+  const handleLogin = (provider: string) => {
+    console.log(`Fazendo login com ${provider}`);
     setIsLoggedIn(true);
     setShowLogin(false);
   };
 
-  const handleFileUpload = (files) => {
-    const newPhotos = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
-      name: file.name,
-      url: URL.createObjectURL(file),
-      category: 'Todas', // A IA categorizaria automaticamente
-      date: new Date().toLocaleDateString()
-    }));
+  const handleFileUpload = (files: File[]) => {
+    const newPhotos = files.map(file => {
+      const category = categorizeWithAI(file.name);
+      return {
+        id: Math.random().toString(36).substr(2, 9),
+        name: file.name,
+        url: URL.createObjectURL(file),
+        category: category,
+        date: new Date().toLocaleDateString('pt-BR')
+      };
+    });
     setPhotos([...photos, ...newPhotos]);
+    console.log(`${newPhotos.length} fotos adicionadas e categorizadas automaticamente pela IA`);
   };
 
   return (
@@ -70,7 +129,7 @@ const Index = () => {
         />
         
         <div className="flex-1 flex flex-col">
-          <div className="p-6 border-b border-gray-700 bg-black/40 backdrop-blur-sm">
+          <div className="p-6 border-b border-red-600/30 bg-black/40 backdrop-blur-sm">
             <SearchBar 
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
@@ -86,6 +145,9 @@ const Index = () => {
                 selectedCategory={selectedCategory}
                 searchQuery={searchQuery}
                 onPhotoClick={handlePhotoClick}
+                onMovePhoto={handleMovePhoto}
+                onDeletePhoto={handlePhotoDelete}
+                onFavoritePhoto={handleFavoritePhoto}
               />
             )}
           </div>
