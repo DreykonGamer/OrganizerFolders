@@ -3,29 +3,52 @@ import React from 'react';
 import { 
   Home, Users, Briefcase, ShoppingBag, Gamepad2, MapPin, 
   Frame, Video, Utensils, FileText, Camera, Heart, Leaf,
-  Calendar, Smartphone, MessageCircle, Star, Lock, Archive
+  Calendar, Smartphone, MessageCircle, Star, Lock, Archive,
+  Building, Sofa, Store, Megaphone, HardHat, Clapperboard,
+  Trophy, Crown, Rss, PawPrint, TreePine, PartyPopper, 
+  Pizza, Printer, Laugh, ScanLine
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const categories = [
-  { name: 'Todas', icon: Home, count: 847 },
-  { name: 'Família', icon: Users, count: 156 },
-  { name: 'Negócios', icon: Briefcase, count: 89 },
-  { name: 'Produtos', icon: ShoppingBag, count: 234 },
-  { name: 'Jogos', icon: Gamepad2, count: 67 },
-  { name: 'Lugares', icon: MapPin, count: 123 },
-  { name: 'Quadros', icon: Frame, count: 45 },
-  { name: 'Vídeos', icon: Video, count: 78 },
-  { name: 'Comidas', icon: Utensils, count: 92 },
-  { name: 'Documentos', icon: FileText, count: 34 },
-  { name: 'Selfies', icon: Camera, count: 145 },
-  { name: 'Pets', icon: Heart, count: 89 },
-  { name: 'Natureza', icon: Leaf, count: 67 },
-  { name: 'Eventos', icon: Calendar, count: 23 },
-  { name: 'Prints', icon: Smartphone, count: 156 },
-  { name: 'Memes', icon: MessageCircle, count: 234 },
-  { name: 'Favoritos', icon: Star, count: 45 },
-  { name: 'Privado', icon: Lock, count: 12 },
+  { name: 'Todas', icon: Home, count: 2847 },
+  { name: 'Família', icon: Users, count: 245 },
+  { name: 'Negócios', icon: Briefcase, count: 134 },
+  { name: 'Produtos', icon: ShoppingBag, count: 187 },
+  { name: 'Jogos', icon: Gamepad2, count: 89 },
+  { name: 'Games', icon: Trophy, count: 76 },
+  { name: 'Lugares', icon: MapPin, count: 156 },
+  { name: 'Quadros', icon: Frame, count: 67 },
+  { name: 'Produtora', icon: Clapperboard, count: 43 },
+  { name: 'Móveis', icon: Sofa, count: 92 },
+  { name: 'Lojas', icon: Store, count: 78 },
+  { name: 'Marketing', icon: Megaphone, count: 112 },
+  { name: 'Vídeos', icon: Video, count: 234 },
+  { name: 'Fotos Casa', icon: Home, count: 145 },
+  { name: 'Fotos Sala', icon: Sofa, count: 89 },
+  { name: 'Fotos Varanda', icon: TreePine, count: 34 },
+  { name: 'Fotos Cozinha', icon: Utensils, count: 67 },
+  { name: 'Fotos Banheiro', icon: HardHat, count: 23 },
+  { name: 'Fotos Piscina', icon: MapPin, count: 45 },
+  { name: 'Fotos Área de Serviço', icon: HardHat, count: 19 },
+  { name: 'Agência', icon: Building, count: 56 },
+  { name: 'Fotos Projetos', icon: FileText, count: 123 },
+  { name: 'Filmmaker', icon: Video, count: 87 },
+  { name: 'Story Maker', icon: Frame, count: 94 },
+  { name: 'CEO', icon: Crown, count: 34 },
+  { name: 'Social Media', icon: Rss, count: 178 },
+  { name: 'Influencer', icon: Star, count: 156 },
+  { name: 'Pets', icon: PawPrint, count: 134 },
+  { name: 'Natureza', icon: Leaf, count: 98 },
+  { name: 'Eventos', icon: PartyPopper, count: 67 },
+  { name: 'Comidas', icon: Pizza, count: 145 },
+  { name: 'Documentos', icon: FileText, count: 89 },
+  { name: 'Prints', icon: Printer, count: 234 },
+  { name: 'Memes', icon: Laugh, count: 167 },
+  { name: 'Selfies', icon: Camera, count: 289 },
+  { name: 'Capturas de tela', icon: ScanLine, count: 198 },
+  { name: 'Favoritos', icon: Heart, count: 78 },
+  { name: 'Privado', icon: Lock, count: 23 },
 ];
 
 interface CategorySidebarProps {
@@ -67,7 +90,7 @@ export const CategorySidebar = ({ selectedCategory, onCategorySelect }: Category
                   <Icon className="w-4 h-4" />
                 </div>
                 <span className={cn(
-                  "font-medium",
+                  "font-medium text-sm",
                   isSelected ? "text-blue-700" : "text-gray-700"
                 )}>
                   {category.name}
@@ -75,7 +98,7 @@ export const CategorySidebar = ({ selectedCategory, onCategorySelect }: Category
               </div>
               
               <span className={cn(
-                "text-sm px-2 py-1 rounded-full",
+                "text-xs px-2 py-1 rounded-full",
                 isSelected
                   ? "bg-blue-100 text-blue-700"
                   : "bg-gray-100 text-gray-500"
